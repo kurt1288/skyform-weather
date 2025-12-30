@@ -1,0 +1,25 @@
+@use './_carbon' as *;
+
+body {
+  background-color: $background;
+  color: $text-primary;
+  margin: 0;
+  padding: $spacing-06 $spacing-05 0;
+  @include type-style('body-compact-01');
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+h4 {
+  font-size: type-scale(1);
+  color: $blue-50;
+  border-bottom: 1px solid $gray-80;
+  padding: $spacing-03 0;
+  margin-bottom: $spacing-01;
+}
+
+section {
+  margin-bottom: $spacing-07;
+}
