@@ -116,25 +116,25 @@ async function getWeather() {
    	hourly: hourlyArray.time.map((t, i) => {
       return {
         time: t,
-        temp: hourlyArray.temperature_2m[i],
-        windSpeed: hourlyArray.wind_speed_10m[i],
-        precipProb: hourlyArray.precipitation_probability[i],
-        precip: hourlyArray.precipitation[i],
-        clouds: hourlyArray.cloud_cover[i],
-        windDir: hourlyArray.wind_direction_10m[i],
-        gusts: hourlyArray.wind_gusts_10m[i]
+        temp: hourlyArray.temperature_2m![i],
+        windSpeed: hourlyArray.wind_speed_10m![i],
+        precipProb: hourlyArray.precipitation_probability![i],
+        precip: hourlyArray.precipitation![i],
+        clouds: hourlyArray.cloud_cover![i],
+        windDir: hourlyArray.wind_direction_10m![i],
+        gusts: hourlyArray.wind_gusts_10m![i]
       };
     }),
   	daily: dailyArray.time.map((t, i) => {
      return {
        time: t,
-       tempMax: dailyArray.temperature_2m_max[i],
-       tempMin: dailyArray.temperature_2m_min[i],
-       precipTotal: dailyArray.precipitation_sum[i],
-       precipChance: dailyArray.precipitation_probability_max[i],
-       windMax: dailyArray.wind_speed_10m_max[i],
-       gustMax: dailyArray.wind_gusts_10m_max[i],
-       windDir: dailyArray.wind_direction_10m_dominant[i],
+       tempMax: dailyArray.temperature_2m_max![i],
+       tempMin: dailyArray.temperature_2m_min![i],
+       precipTotal: dailyArray.precipitation_sum![i],
+       precipChance: dailyArray.precipitation_probability_max![i],
+       windMax: dailyArray.wind_speed_10m_max![i],
+       gustMax: dailyArray.wind_gusts_10m_max![i],
+       windDir: dailyArray.wind_direction_10m_dominant![i],
      };
     }),
   };
