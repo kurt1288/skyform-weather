@@ -19,8 +19,9 @@ const weatherData = ref<any>(null);
 navigator.geolocation.getCurrentPosition(success);
 
 async function success(position: GeolocationPosition) {
+  isLoading.value = true;
   setLocation(position);
-  weatherData.value = await fetchData();
+  weatherData.value = await fetchData(position);
   getCityName(position.coords.latitude, position.coords.longitude);
 
   const currentHourIndex = findCurrentHourIndex();
@@ -52,18 +53,9 @@ function findCurrentHourIndex() {
   });
 }
 
-const updateData = async () => {
-  isLoading.value = true;
-  weatherData.value = await fetchData();
-  const currentHourIndex = findCurrentHourIndex();
-  weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
-  isLoading.value = false;
-}
-
 const handleVisibilityChange = () => {
   if (document.visibilityState === 'visible') {
-    console.log("visible");
-    updateData();
+    navigator.geolocation.getCurrentPosition(success);
   }
 };
 

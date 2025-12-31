@@ -2,6 +2,7 @@ import { getWeather } from "./weatherApi";
 
 const CACHE_KEY = 'app_data_cache';
 const TIMESTAMP_KEY = 'app_data_timestamp';
+const LOCATION_KEY = 'app_data_location';
 
 const getWindowId = () => {
   const now = new Date();
@@ -19,12 +20,13 @@ const dateReviver = (key: string, value: any) => {
 };
 
 export const useDataService = () => {
-  const fetchData = async () => {
+  const fetchData = async (location: GeolocationPosition) => {
     const currentWindowId = getWindowId();
     const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
     const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedLocation = localStorage.getItem(LOCATION_KEY);
 
-    if (cachedWindowId === currentWindowId && cachedData) {
+    if (cachedLocation === `${location.coords.latitude} ${location.coords.longitude}` && cachedWindowId === currentWindowId && cachedData) {
       console.log("Using cached data for current 15-minute window.");
       return JSON.parse(cachedData, dateReviver);
     }
@@ -34,6 +36,7 @@ export const useDataService = () => {
       const data = await getWeather();
       localStorage.setItem(CACHE_KEY, JSON.stringify(data));
       localStorage.setItem(TIMESTAMP_KEY, currentWindowId);
+      localStorage.setItem(LOCATION_KEY, `${location.coords.latitude} ${location.coords.longitude}`);
 
       return data;
     } catch (error) {
