@@ -8,6 +8,7 @@ import Daily from './components/Daily.vue';
 import Alert from './components/Alert.vue';
 import ContentSwitcher from './components/ContentSwitcher.vue';
 import SkeletonLoader from './components/SkeletonLoader.vue';
+import Settings from './components/Settings.vue';
 import { useDataService } from './updateService';
 
 const { fetchWeather, fetchCityName, fetchAlerts, isLoading } = useDataService();
@@ -16,6 +17,7 @@ const activeTab = ref('hourly');
 const location = ref("");
 const weatherData = ref<any>(null);
 const alerts = ref([]);
+const isSettingsOpen = ref(false);
 
 navigator.geolocation.getCurrentPosition(success);
 
@@ -62,7 +64,8 @@ onUnmounted(() => {
       <SkeletonLoader height="350px" />
     </div>
     <template v-else>
-      <Current :location="location" :weatherData="weatherData" />
+      <Settings :show="isSettingsOpen" @close="isSettingsOpen = false" />
+      <Current :location="location" :weatherData="weatherData" @open-settings="isSettingsOpen = true" />
       <Alert :alerts="alerts" v-if="alerts.length > 0" />
       <Today :weatherData="weatherData" />
       <ContentSwitcher v-model="activeTab" />
