@@ -40,9 +40,11 @@ const getWidth = (t: number) => {
           ></div>
           <span class="value">{{ Math.round(hour.temp) }}°</span>
         </div>
+        <div id="hourInfoClouds">
+          {{ hour.clouds }}
+        </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
           <div class="primary">{{ hour.precipProb }}%</div>
-          <div class="dot secondary">•</div>
           <div class="secondary">{{ hour.precip.toFixed(2) }}in</div>
         </div>
         <div id="hourInfoWind" class="hourlyInfoCell">
@@ -79,7 +81,7 @@ h4 {
 
 .hourInfo {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
@@ -107,6 +109,14 @@ h4 {
       width: 100%;
       text-align: center;
     }
+  }
+
+  #hourInfoClouds {
+    text-align: center;
+  }
+
+  #hourInfoPrecip {
+    flex-direction: column;
   }
 
   .hourlyInfoCell {
