@@ -5,6 +5,7 @@ const CACHE_KEY = 'app_data_cache';
 const TIMESTAMP_KEY = 'app_data_timestamp';
 const LOCATION_KEY = 'app_data_location';
 const CITY_KEY = 'app_data_city';
+const ALERTS_KEY = 'app_data_alerts';
 
 const getWindowId = () => {
   const now = new Date();
@@ -75,6 +76,15 @@ export const useDataService = () => {
   }
 
   const fetchAlerts = async (position: GeolocationPosition) => {
+    const currentWindowId = getWindowId();
+    const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
+    const cachedLocation = localStorage.getItem(LOCATION_KEY);
+    const cachedAlerts = localStorage.getItem(ALERTS_KEY);
+
+    if (cachedLocation === `${position.coords.latitude} ${position.coords.longitude}` && cachedWindowId === currentWindowId && cachedAlerts) {
+      return JSON.parse(cachedAlerts);
+    }
+
     const url = `https://api.weather.gov/alerts/active?point=${position.coords.latitude},${position.coords.longitude}`;
 
     try {
@@ -90,10 +100,11 @@ export const useDataService = () => {
         }
       });
 
+      localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
       return alerts;
     } catch (error) {
       console.error("Error fetching alerts:", error);
-      return [];
+      return cachedAlerts ? JSON.parse(cachedAlerts) : [];
     }
   };
 
