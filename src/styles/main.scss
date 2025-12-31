@@ -20,6 +20,12 @@ h4 {
   margin-bottom: $spacing-01;
 }
 
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 section {
   margin-bottom: $spacing-07;
 }

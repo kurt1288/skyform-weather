@@ -31,6 +31,7 @@ import { ref } from 'vue';
   margin: $spacing-04 0;
 
   button {
+    font-size: type-scale(2);
     border-radius: 0;
     background-color: transparent;
     border: 1px solid $border-inverse;
