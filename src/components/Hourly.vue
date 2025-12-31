@@ -117,6 +117,7 @@ h4 {
 
   #hourInfoPrecip {
     flex-direction: column;
+    align-items: end;
   }
 
   .hourlyInfoCell {

@@ -9,11 +9,10 @@ const props =defineProps<{
     <h4>NEXT 7 DAYS</h4>
     <div>
       <div class="dayInfo" v-for="day in weatherData.daily">
-        <div id="dayInfoTime" class="secondary">{{ new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(day.time) }}</div>
-        <div id="dayInfoTemp">{{ Math.round(day.tempMax) }}°/{{ Math.round(day.tempMin) }}°</div>
+        <div id="dayInfoTime" class="secondary">{{ new Intl.DateTimeFormat("en-US", { weekday: "short", month: "numeric", day: "numeric" }).format(day.time) }}</div>
+        <div id="dayInfoTemp">{{ Math.round(day.tempMin) }}° --- {{ Math.round(day.tempMax) }}°</div>
         <div id="dayInfoPrecip" class="dayInfoCell">
           <div class="primary">{{ day.precipChance }}%</div>
-          <div class="dot secondary">•</div>
           <div class="secondary">{{ day.precipTotal.toFixed(2) }}in</div>
         </div>
         <div id="dayInfoWind" class="dayInfoCell">
@@ -50,7 +49,7 @@ h4 {
 
 .dayInfo {
   display: grid;
-  grid-template-columns: 50px repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
@@ -63,6 +62,11 @@ h4 {
     display: flex;
     align-items: center;
     justify-content: right;
+  }
+
+  #dayInfoPrecip {
+    flex-direction: column;
+    align-items: end;
   }
 
   .dot {
