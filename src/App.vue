@@ -10,9 +10,8 @@ import ContentSwitcher from './components/ContentSwitcher.vue';
 import SkeletonLoader from './components/SkeletonLoader.vue';
 import { useDataService } from './updateService';
 
-const { fetchWeather, fetchCityName, fetchAlerts } = useDataService();
+const { fetchWeather, fetchCityName, fetchAlerts, isLoading } = useDataService();
 
-const isLoading = ref(true);
 const activeTab = ref('hourly');
 const location = ref("");
 const weatherData = ref<any>(null);
@@ -21,7 +20,6 @@ const alerts = ref([]);
 navigator.geolocation.getCurrentPosition(success);
 
 async function success(position: GeolocationPosition) {
-  isLoading.value = true;
   setLocation(position);
   weatherData.value = await fetchWeather(position);
   location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
@@ -29,7 +27,6 @@ async function success(position: GeolocationPosition) {
 
   const currentHourIndex = findCurrentHourIndex();
   weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
-  isLoading.value = false;
 }
 
 function findCurrentHourIndex() {

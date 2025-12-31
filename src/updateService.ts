@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import { getWeather } from "./weatherApi";
 
 const CACHE_KEY = 'app_data_cache';
@@ -21,6 +22,8 @@ const dateReviver = (key: string, value: any) => {
 };
 
 export const useDataService = () => {
+  const isLoading = ref(false);
+
   const fetchWeather = async (location: GeolocationPosition) => {
     const currentWindowId = getWindowId();
     const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
@@ -34,14 +37,17 @@ export const useDataService = () => {
 
     console.log("Cache stale or missing. Updating from API...");
     try {
+      isLoading.value = true;
       const data = await getWeather();
       localStorage.setItem(CACHE_KEY, JSON.stringify(data));
       localStorage.setItem(TIMESTAMP_KEY, currentWindowId);
       localStorage.setItem(LOCATION_KEY, `${location.coords.latitude} ${location.coords.longitude}`);
+      isLoading.value = false;
 
       return data;
     } catch (error) {
       console.error("Fetch failed", error);
+      isLoading.value = false;
       return cachedData ? JSON.parse(cachedData, dateReviver) : null;
     }
   };
@@ -91,5 +97,5 @@ export const useDataService = () => {
     }
   };
 
-  return { fetchWeather, fetchCityName, fetchAlerts };
+  return { fetchWeather, fetchCityName, fetchAlerts, isLoading };
 };
