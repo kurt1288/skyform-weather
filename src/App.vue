@@ -5,16 +5,18 @@ import Current from './components/Current.vue';
 import Hourly from './components/Hourly.vue';
 import Today from './components/Today.vue';
 import Daily from './components/Daily.vue';
+import Alert from './components/Alert.vue';
 import ContentSwitcher from './components/ContentSwitcher.vue';
 import SkeletonLoader from './components/SkeletonLoader.vue';
 import { useDataService } from './updateService';
 
-const { fetchWeather, fetchCityName } = useDataService();
+const { fetchWeather, fetchCityName, fetchAlerts } = useDataService();
 
 const isLoading = ref(true);
 const activeTab = ref('hourly');
 const location = ref("");
 const weatherData = ref<any>(null);
+const alerts = ref([]);
 
 navigator.geolocation.getCurrentPosition(success);
 
@@ -23,6 +25,7 @@ async function success(position: GeolocationPosition) {
   setLocation(position);
   weatherData.value = await fetchWeather(position);
   location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
+  alerts.value = await fetchAlerts(position);
 
   const currentHourIndex = findCurrentHourIndex();
   weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
@@ -63,6 +66,7 @@ onUnmounted(() => {
     </div>
     <template v-else>
       <Current :location="location" :weatherData="weatherData" />
+      <Alert :alerts="alerts" />
       <Today :weatherData="weatherData" />
       <ContentSwitcher v-model="activeTab" />
       <Hourly :weatherData="weatherData" v-if="activeTab === 'hourly'" />

@@ -68,5 +68,28 @@ export const useDataService = () => {
     }
   }
 
-  return { fetchWeather, fetchCityName };
+  const fetchAlerts = async (position: GeolocationPosition) => {
+    const url = `https://api.weather.gov/alerts/active?point=${position.coords.latitude},${position.coords.longitude}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const alerts: [] = data.features.map((feature: any) => {
+        return {
+          event: feature.properties.event,
+          headline: feature.properties.parameters.NWSheadline[0],
+          description: feature.properties.description,
+          id: feature.properties.id,
+        }
+      });
+
+      return alerts;
+    } catch (error) {
+      console.error("Error fetching alerts:", error);
+      return [];
+    }
+  };
+
+  return { fetchWeather, fetchCityName, fetchAlerts };
 };
