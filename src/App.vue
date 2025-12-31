@@ -63,7 +63,7 @@ onUnmounted(() => {
     </div>
     <template v-else>
       <Current :location="location" :weatherData="weatherData" />
-      <Alert :alerts="alerts" />
+      <Alert :alerts="alerts" v-if="alerts.length > 0" />
       <Today :weatherData="weatherData" />
       <ContentSwitcher v-model="activeTab" />
       <Hourly :weatherData="weatherData" v-if="activeTab === 'hourly'" />

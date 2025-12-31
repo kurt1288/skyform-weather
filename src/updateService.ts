@@ -24,6 +24,7 @@ const dateReviver = (key: string, value: any) => {
 
 export const useDataService = () => {
   const isLoading = ref(false);
+  let shouldUpdateAlerts = false;
 
   const fetchWeather = async (location: GeolocationPosition) => {
     const currentWindowId = getWindowId();
@@ -44,11 +45,13 @@ export const useDataService = () => {
       localStorage.setItem(TIMESTAMP_KEY, currentWindowId);
       localStorage.setItem(LOCATION_KEY, `${location.coords.latitude} ${location.coords.longitude}`);
       isLoading.value = false;
+      shouldUpdateAlerts = true;
 
       return data;
     } catch (error) {
       console.error("Fetch failed", error);
       isLoading.value = false;
+      shouldUpdateAlerts = true;
       return cachedData ? JSON.parse(cachedData, dateReviver) : null;
     }
   };
@@ -76,12 +79,11 @@ export const useDataService = () => {
   }
 
   const fetchAlerts = async (position: GeolocationPosition) => {
-    const currentWindowId = getWindowId();
-    const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
     const cachedLocation = localStorage.getItem(LOCATION_KEY);
     const cachedAlerts = localStorage.getItem(ALERTS_KEY);
 
-    if (cachedLocation === `${position.coords.latitude} ${position.coords.longitude}` && cachedWindowId === currentWindowId && cachedAlerts) {
+    if (cachedLocation === `${position.coords.latitude} ${position.coords.longitude}` && shouldUpdateAlerts && cachedAlerts) {
+      shouldUpdateAlerts = false;
       return JSON.parse(cachedAlerts);
     }
 
@@ -100,10 +102,12 @@ export const useDataService = () => {
         }
       });
 
+      shouldUpdateAlerts = false;
       localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
       return alerts;
     } catch (error) {
       console.error("Error fetching alerts:", error);
+      shouldUpdateAlerts = false;
       return cachedAlerts ? JSON.parse(cachedAlerts) : [];
     }
   };
