@@ -5,9 +5,11 @@ import Hourly from './components/Hourly.vue';
 import Today from './components/Today.vue';
 import Daily from './components/Daily.vue';
 import ContentSwitcher from './components/ContentSwitcher.vue';
+import SkeletonLoader from './components/SkeletonLoader.vue';
 
 import { ref } from 'vue';
 
+const isLoading = ref(true);
 const activeTab = ref('hourly');
 const location = ref("");
 const weatherData = ref<any>(null);
@@ -21,6 +23,7 @@ async function success(position: GeolocationPosition) {
 
   const currentHourIndex = findCurrentHourIndex();
   weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
+  isLoading.value = false;
 }
 
 async function getCityName(lat: number, lon: number) {
@@ -50,13 +53,25 @@ function findCurrentHourIndex() {
 
 <template>
   <div class="globalContainer">
-    <Current :location="location" :weatherData="weatherData" />
-    <Today :weatherData="weatherData" />
-    <ContentSwitcher v-model="activeTab" />
-    <Hourly :weatherData="weatherData" v-if="activeTab === 'hourly'" />
-    <Daily :weatherData="weatherData" v-if="activeTab === 'daily'" />
+    <div class="loading" v-if="isLoading">
+      <SkeletonLoader height="175px" />
+      <SkeletonLoader height="125px" />
+      <SkeletonLoader height="350px" />
+    </div>
+    <template v-else>
+      <Current :location="location" :weatherData="weatherData" />
+      <Today :weatherData="weatherData" />
+      <ContentSwitcher v-model="activeTab" />
+      <Hourly :weatherData="weatherData" v-if="activeTab === 'hourly'" />
+      <Daily :weatherData="weatherData" v-if="activeTab === 'daily'" />
+    </template>
   </div>
 </template>
 
 <style lang="scss">
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-07;
+}
 </style>
