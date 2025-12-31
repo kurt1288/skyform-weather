@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const props =defineProps<{
   weatherData?: any
 }>();
@@ -12,6 +14,17 @@ const formatTime = (time: Date) => {
     hour12: true
   });
 }
+
+const padding = 5;
+const minTemp = computed(() => Math.min(...props.weatherData.hourly.map((hour: any) => hour.temp)) - padding);
+const maxTemp = computed(() => Math.max(...props.weatherData.hourly.map((hour: any) => hour.temp)) + padding);
+
+const getWidth = (t: number) => {
+  if (maxTemp.value === minTemp.value) return '50%';
+
+  const percentage = ((t - minTemp.value) / (maxTemp.value - minTemp.value)) * 100;
+  return `${percentage}%`;
+};
 </script>
 
 <template>
@@ -20,7 +33,13 @@ const formatTime = (time: Date) => {
     <div>
       <div class="hourInfo" v-for="hour in weatherData.hourly">
         <div id="hourInfoTime" class="secondary">{{ formatTime(hour.time) }}</div>
-        <div id="hourInfoTemp">{{ Math.round(hour.temp) }}°</div>
+        <div id="hourInfoTemp">
+          <div
+            class="bar"
+            :style="{ width: getWidth(Math.round(hour.temp)) }"
+          ></div>
+          <span class="value">{{ Math.round(hour.temp) }}°</span>
+        </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
           <div class="primary">{{ hour.precipProb }}%</div>
           <div class="dot secondary">•</div>
@@ -67,6 +86,27 @@ h4 {
 
   #hourInfoTemp {
     font-size: type-scale(3);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    .bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background-color: $layer-accent-01;
+      border-right: 2px solid $border-tile-01;
+      z-index: 1;
+    }
+
+    .value {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      text-align: center;
+    }
   }
 
   .hourlyInfoCell {
