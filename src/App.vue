@@ -22,7 +22,7 @@ async function success(position: GeolocationPosition) {
   isLoading.value = true;
   setLocation(position);
   weatherData.value = await fetchData(position);
-  getCityName(position.coords.latitude, position.coords.longitude);
+  location.value = await getCityName(position.coords.latitude, position.coords.longitude);
 
   const currentHourIndex = findCurrentHourIndex();
   weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
@@ -33,13 +33,13 @@ async function getCityName(lat: number, lon: number) {
     const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
 
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+      const response = await fetch(url);
+      const data = await response.json();
 
-        location.value = `${data.city}, ${data.principalSubdivision}`;
-        return data.city || data.locality || "Unknown City";
+      return `${data.locality}, ${data.principalSubdivision}`;
     } catch (error) {
-        console.error("Error fetching city name:", error);
+      console.error("Error fetching city name:", error);
+      return "";
     }
 }
 
