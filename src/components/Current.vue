@@ -2,13 +2,23 @@
 defineProps<{
   location?: string
   weatherData?: any
-}>()
+}>();
+
+const formatStringDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).format((Number(date) * 1000)).replace(',', '');
+};
 </script>
 
 <template>
   <section class="current" v-if="weatherData !== null">
     <p class="location">{{ location }}</p>
-    <p class="time">{{ weatherData.current.time }}</p>
+    <p class="time">{{ formatStringDate(weatherData.current.time) }}</p>
     <section class="currentInfo">
       <div>
         <h2 class="currentTemp">{{ Math.round(weatherData.current.temperature_2m) }}°</h2>

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { setLocation, getWeather } from '@/weatherApi';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { setLocation } from '@/weatherApi';
 import Current from './components/Current.vue';
 import Hourly from './components/Hourly.vue';
 import Today from './components/Today.vue';
 import Daily from './components/Daily.vue';
 import ContentSwitcher from './components/ContentSwitcher.vue';
 import SkeletonLoader from './components/SkeletonLoader.vue';
+import { useDataService } from './updateService';
 
-import { ref } from 'vue';
+const { fetchData } = useDataService();
 
 const isLoading = ref(true);
 const activeTab = ref('hourly');
@@ -18,7 +20,7 @@ navigator.geolocation.getCurrentPosition(success);
 
 async function success(position: GeolocationPosition) {
   setLocation(position);
-  weatherData.value = await getWeather();
+  weatherData.value = await fetchData();
   getCityName(position.coords.latitude, position.coords.longitude);
 
   const currentHourIndex = findCurrentHourIndex();
@@ -49,6 +51,29 @@ function findCurrentHourIndex() {
     return item.time.getHours() === currentHour;
   });
 }
+
+const updateData = async () => {
+  isLoading.value = true;
+  weatherData.value = await fetchData();
+  const currentHourIndex = findCurrentHourIndex();
+  weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
+  isLoading.value = false;
+}
+
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    console.log("visible");
+    updateData();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
 </script>
 
 <template>

@@ -55,21 +55,9 @@ async function getWeather() {
 
   if (!response) return;
 
-  const utcOffsetSeconds = response.utcOffsetSeconds();
   const current = response.current()!;
   const hourly = response.hourly()!;
   const daily = response.daily()!;
-
-  const formatStringDate = () => {
-    const date = new Date((Number(current.time())) * 1000);
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    }).format(date).replace(',', '');
-  };
 
   const hourlyArray = {
     time: Array.from(
@@ -101,7 +89,7 @@ async function getWeather() {
 
   const weatherData = {
   	current: {
-  		time: formatStringDate(),
+  		time: new Date(Number(current.time())),
   		temperature_2m: current.variables(0)!.value(),
   		precipitation: current.variables(1)!.value(),
   		wind_speed_10m: current.variables(2)!.value(),
