@@ -9,7 +9,7 @@ const props =defineProps<{
     <h4>NEXT 7 DAYS</h4>
     <div>
       <div class="dayInfo" v-for="day in weatherData.daily">
-        <div id="dayInfoTime" class="secondary">{{ day.time.getDate() }}</div>
+        <div id="dayInfoTime" class="secondary">{{ new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(day.time) }}</div>
         <div id="dayInfoTemp">{{ Math.round(day.tempMax) }}°/{{ Math.round(day.tempMin) }}°</div>
         <div id="dayInfoPrecip" class="dayInfoCell">
           <div class="primary">{{ day.precipChance }}%</div>
