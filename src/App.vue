@@ -9,7 +9,7 @@ import ContentSwitcher from './components/ContentSwitcher.vue';
 import SkeletonLoader from './components/SkeletonLoader.vue';
 import { useDataService } from './updateService';
 
-const { fetchData } = useDataService();
+const { fetchWeather, fetchCityName } = useDataService();
 
 const isLoading = ref(true);
 const activeTab = ref('hourly');
@@ -21,26 +21,12 @@ navigator.geolocation.getCurrentPosition(success);
 async function success(position: GeolocationPosition) {
   isLoading.value = true;
   setLocation(position);
-  weatherData.value = await fetchData(position);
-  location.value = await getCityName(position.coords.latitude, position.coords.longitude);
+  weatherData.value = await fetchWeather(position);
+  location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
 
   const currentHourIndex = findCurrentHourIndex();
   weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
   isLoading.value = false;
-}
-
-async function getCityName(lat: number, lon: number) {
-    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      return `${data.locality}, ${data.principalSubdivision}`;
-    } catch (error) {
-      console.error("Error fetching city name:", error);
-      return "";
-    }
 }
 
 function findCurrentHourIndex() {

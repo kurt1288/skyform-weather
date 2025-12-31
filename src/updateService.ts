@@ -3,6 +3,7 @@ import { getWeather } from "./weatherApi";
 const CACHE_KEY = 'app_data_cache';
 const TIMESTAMP_KEY = 'app_data_timestamp';
 const LOCATION_KEY = 'app_data_location';
+const CITY_KEY = 'app_data_city';
 
 const getWindowId = () => {
   const now = new Date();
@@ -20,7 +21,7 @@ const dateReviver = (key: string, value: any) => {
 };
 
 export const useDataService = () => {
-  const fetchData = async (location: GeolocationPosition) => {
+  const fetchWeather = async (location: GeolocationPosition) => {
     const currentWindowId = getWindowId();
     const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
     const cachedData = localStorage.getItem(CACHE_KEY);
@@ -45,5 +46,27 @@ export const useDataService = () => {
     }
   };
 
-  return { fetchData };
+  const fetchCityName = async (lat: number, lon: number) => {
+    const cachedLocation = localStorage.getItem(LOCATION_KEY);
+    const cachedCity = localStorage.getItem(CITY_KEY);
+
+    if (cachedLocation === `${lat} ${lon}` && cachedCity) {
+      return cachedCity;
+    }
+
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      localStorage.setItem(CITY_KEY, `${data.locality}, ${data.principalSubdivision}`);
+      return `${data.locality}, ${data.principalSubdivision}`;
+    } catch (error) {
+      console.error("Error fetching city name:", error);
+      return "";
+    }
+  }
+
+  return { fetchWeather, fetchCityName };
 };
