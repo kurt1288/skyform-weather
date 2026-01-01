@@ -40,19 +40,18 @@ export const useDataService = () => {
     }
 
     console.log("Cache stale or missing. Updating from API...");
+    shouldUpdateAlerts = true;
+
     try {
       const data = await getWeather();
       localStorage.setItem(CACHE_KEY, JSON.stringify(data));
       localStorage.setItem(TIMESTAMP_KEY, currentWindowId);
       localStorage.setItem(LOCATION_KEY, `${location.coords.latitude} ${location.coords.longitude}`);
       isLoading.value = false;
-      shouldUpdateAlerts = true;
-
       return data;
     } catch (error) {
       console.error("Fetch failed", error);
       isLoading.value = false;
-      shouldUpdateAlerts = true;
       return cachedData ? JSON.parse(cachedData, dateReviver) : null;
     }
   };
@@ -83,12 +82,12 @@ export const useDataService = () => {
     const cachedLocation = localStorage.getItem(LOCATION_KEY);
     const cachedAlerts = localStorage.getItem(ALERTS_KEY);
 
-    if (cachedLocation === `${position.coords.latitude} ${position.coords.longitude}` && shouldUpdateAlerts && cachedAlerts) {
-      shouldUpdateAlerts = false;
+    if (cachedLocation === `${position.coords.latitude} ${position.coords.longitude}` && !shouldUpdateAlerts && cachedAlerts) {
       return JSON.parse(cachedAlerts);
     }
 
     const url = `https://api.weather.gov/alerts/active?point=${position.coords.latitude},${position.coords.longitude}`;
+    shouldUpdateAlerts = false;
 
     try {
       const response = await fetch(url);
@@ -103,12 +102,10 @@ export const useDataService = () => {
         }
       });
 
-      shouldUpdateAlerts = false;
       localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
       return alerts;
     } catch (error) {
       console.error("Error fetching alerts:", error);
-      shouldUpdateAlerts = false;
       return cachedAlerts ? JSON.parse(cachedAlerts) : [];
     }
   };
