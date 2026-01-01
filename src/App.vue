@@ -24,12 +24,12 @@ navigator.geolocation.getCurrentPosition(success);
 async function success(position: GeolocationPosition) {
   setLocation(position);
   const weather = await fetchWeather(position);
-  location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
-  alerts.value = await fetchAlerts(position);
-
   const currentHourIndex = findCurrentHourIndex(weather);
   weather.hourly = weather.hourly.slice(currentHourIndex, currentHourIndex + 24);
   weatherData.value = weather;
+
+  location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
+  alerts.value = await fetchAlerts(position);
 }
 
 function findCurrentHourIndex(weather: any) {
