@@ -23,20 +23,21 @@ navigator.geolocation.getCurrentPosition(success);
 
 async function success(position: GeolocationPosition) {
   setLocation(position);
-  weatherData.value = await fetchWeather(position);
+  const weather = await fetchWeather(position);
   location.value = await fetchCityName(position.coords.latitude, position.coords.longitude);
   alerts.value = await fetchAlerts(position);
 
-  const currentHourIndex = findCurrentHourIndex();
-  weatherData.value.hourly = weatherData.value.hourly.slice(currentHourIndex, currentHourIndex + 24);
+  const currentHourIndex = findCurrentHourIndex(weather);
+  weather.hourly = weather.hourly.slice(currentHourIndex, currentHourIndex + 24);
+  weatherData.value = weather;
 }
 
-function findCurrentHourIndex() {
-  if (!weatherData) return -1;
+function findCurrentHourIndex(weather: any) {
+  if (!weather) return -1;
 
   const currentHour = new Date().getHours();
 
-  return weatherData.value.hourly.findIndex((item: any) => {
+  return weather.hourly.findIndex((item: any) => {
     return item.time.getHours() === currentHour;
   });
 }
