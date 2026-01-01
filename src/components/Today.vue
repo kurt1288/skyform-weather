@@ -14,7 +14,7 @@ defineProps<{
       </div>
       <div class="cell">
         <span class="label">Precip</span>
-        <span class="value">{{ weatherData.daily[0].precipChance }}%/{{ weatherData.daily[0].precipTotal }}in</span>
+        <span class="value">{{ weatherData.daily[0].precipChance }}%/{{ weatherData.daily[0].precipTotal.toFixed(2) }}in</span>
       </div>
       <div class="cell">
         <span class="label">Wind</span>
