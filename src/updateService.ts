@@ -23,10 +23,11 @@ const dateReviver = (key: string, value: any) => {
 };
 
 export const useDataService = () => {
-  const isLoading = ref(false);
+  const isLoading = ref(true);
   let shouldUpdateAlerts = false;
 
   const fetchWeather = async (location: GeolocationPosition) => {
+    isLoading.value = true;
     const currentWindowId = getWindowId();
     const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
     const cachedData = localStorage.getItem(CACHE_KEY);
@@ -34,12 +35,12 @@ export const useDataService = () => {
 
     if (cachedLocation === `${location.coords.latitude} ${location.coords.longitude}` && cachedWindowId === currentWindowId && cachedData) {
       console.log("Using cached data for current 15-minute window.");
+      isLoading.value = false;
       return JSON.parse(cachedData, dateReviver);
     }
 
     console.log("Cache stale or missing. Updating from API...");
     try {
-      isLoading.value = true;
       const data = await getWeather();
       localStorage.setItem(CACHE_KEY, JSON.stringify(data));
       localStorage.setItem(TIMESTAMP_KEY, currentWindowId);
