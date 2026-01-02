@@ -2,15 +2,43 @@
 const props =defineProps<{
   weatherData?: any
 }>();
+
+import { computed, ref } from 'vue';
+
+const bounds = computed(() => {
+  const lows = props.weatherData.daily.map((d: any) => d.tempMin);
+  const highs = props.weatherData.daily.map((d: any) => d.tempMax);
+  const lowest = Math.min(...lows);
+  const highest = Math.max(...highs);
+  return { lowest, highest, range: highest - lowest };
+});
+
+const days = computed(() => {
+  const { lowest, range } = bounds.value;
+
+  return props.weatherData.daily.map((day: any) => ({
+    ...day,
+    offset: ((day.tempMin - lowest) / range) * 100,
+    width: ((day.tempMax - day.tempMin) / range) * 100,
+  }));
+});
 </script>
 
 <template>
   <section v-if="weatherData !== null">
     <h4>NEXT 7 DAYS</h4>
     <div>
-      <div class="dayInfo" v-for="day in weatherData.daily">
+      <div class="dayInfo" v-for="day in days" :key="day.time.toString()">
         <div id="dayInfoTime" class="secondary">{{ new Intl.DateTimeFormat("en-US", { weekday: "short", month: "numeric", day: "numeric" }).format(day.time) }}</div>
-        <div id="dayInfoTemp">{{ Math.round(day.tempMin) }}° --- {{ Math.round(day.tempMax) }}°</div>
+        <div id="dayInfoTemp">
+          <div class="temps">
+            <span>{{ Math.round(day.tempMin) }}°</span>
+            <span>{{ Math.round(day.tempMax) }}°</span>
+          </div>
+          <div class="tempBar">
+            <div :style="{ left: `${day.offset}%`, width: `${day.width}%` }"></div>
+          </div>
+        </div>
         <div id="dayInfoPrecip" class="dayInfoCell">
           <div class="primary">{{ day.precipChance }}%</div>
           <div class="secondary">{{ day.precipTotal.toFixed(2) }}in</div>
@@ -56,6 +84,23 @@ h4 {
 
   #dayInfoTemp {
     font-size: type-scale(3);
+
+    .temps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: $spacing-02;
+    }
+
+    .tempBar {
+      height: 2px;
+      position: relative;
+
+      div {
+        position: absolute;
+        height: 2px;
+        background-color: $blue-50;
+      }
+    }
   }
 
   .dayInfoCell {
