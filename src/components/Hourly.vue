@@ -41,7 +41,7 @@ const getWidth = (t: number) => {
           <span class="value">{{ Math.round(hour.temp) }}°</span>
         </div>
         <div id="hourInfoClouds">
-          {{ hour.clouds }}
+          {{ hour.clouds }}%
         </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
           <div class="primary">{{ hour.precipProb }}%</div>
@@ -99,7 +99,7 @@ h4 {
       left: 0;
       height: 100%;
       background-color: $layer-accent-01;
-      border-right: 2px solid $border-tile-01;
+      border-right: 2px solid $blue-50;
       z-index: 1;
     }
 
