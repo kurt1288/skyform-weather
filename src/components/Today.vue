@@ -9,15 +9,13 @@ defineProps<{
     <h4>TODAY</h4>
     <div class="currentDetailsGrid">
       <div class="cell">
-        <span class="label">High/Low</span>
-        <span class="value">{{ Math.round(weatherData.daily[0].tempMax) }}°/{{ Math.round(weatherData.daily[0].tempMin) }}°</span>
+        <span class="primary">{{ Math.round(weatherData.daily[0].tempMax) }}°</span><span class="secondary">{{ Math.round(weatherData.daily[0].tempMin) }}°</span>
       </div>
       <div class="cell">
-        <span class="label">Precip</span>
-        <span class="value">{{ weatherData.daily[0].precipChance }}%/{{ weatherData.daily[0].precipTotal.toFixed(2) }}in</span>
+        <span class="primary">{{ weatherData.daily[0].precipChance }}%</span>
+        <span class="secondary">({{ weatherData.daily[0].precipTotal.toFixed(2) }}in)</span>
       </div>
       <div class="cell">
-        <span class="label">Wind</span>
         <span class="value">
           <div class="windInfo">
             <svg
@@ -30,12 +28,9 @@ defineProps<{
               <path d="M12,2 L19,21 L12,17 L5,21 Z" />
             </svg>
             <span>{{ Math.round(weatherData.daily[0].windMax) }}mph</span>
+            <span class="secondary">(G {{ Math.round(weatherData.daily[0].gustMax) }})</span>
           </div>
         </span>
-      </div>
-      <div class="cell">
-        <span class="label">Gusts</span>
-        <span class="value">{{ Math.round(weatherData.daily[0].gustMax) }}mph</span>
       </div>
     </div>
   </section>
@@ -59,17 +54,15 @@ defineProps<{
 }
 
 .cell {
-  display: flex;
-  flex-direction: column;
-
-  .label {
-    color: $text-secondary;
-    font-size: type-scale(1);
-  }
-
-  .value {
+  .primary {
     @include type-style('code-02');
     font-weight: font-weight('semibold');
+    margin-right: $spacing-02;
+  }
+
+  .secondary {
+    color: $text-secondary;
+    font-size: type-scale(1);
   }
 
   .windInfo {
