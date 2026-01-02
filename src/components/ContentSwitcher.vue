@@ -32,10 +32,7 @@ import { ref } from 'vue';
 
   button {
     font-size: type-scale(2);
-    border-radius: 0;
-    background-color: transparent;
     border: 1px solid $border-inverse;
-    color: $text-secondary;
     padding: $spacing-03 $spacing-02;
     flex: 1;
 

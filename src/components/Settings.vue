@@ -35,10 +35,10 @@ defineEmits(['close']);
   z-index: 999;
   display: flex;
   justify-content: flex-end;
+  z-index: 1001;
 
   .drawer-panel {
     width: 100%;
-    height: 100%;
     padding: 20px;
     background-color: $background;
 
@@ -46,11 +46,7 @@ defineEmits(['close']);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: transparent;
-      border: none;
-      color: $text-secondary;
       padding: 0;
-      cursor: pointer;
 
       svg {
         display: block;

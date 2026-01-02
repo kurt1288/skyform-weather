@@ -1,12 +1,21 @@
 @use './_carbon' as *;
 
+html, body, #app {
+  height: 100%;
+  width: 100vw;
+}
+
 body {
   background-color: $background;
   color: $text-primary;
   margin: 0;
-  padding: $spacing-06 $spacing-05 0;
+  padding: 0;
   @include type-style('body-compact-01');
 }
+
+/* #app {
+  padding: $spacing-06 $spacing-05 0;
+} */
 
 h1, h2, h3, h4, p {
   margin: 0;
@@ -24,6 +33,14 @@ button, input, select, textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: $text-secondary;
+  cursor: pointer;
+  border-radius: 0;
 }
 
 section {

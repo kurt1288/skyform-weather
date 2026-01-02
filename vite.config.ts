@@ -10,7 +10,7 @@ export default defineConfig({
   base: '/skyform-weather/',
   plugins: [
     vue(),
-    vueDevTools(),
+    // vueDevTools(),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
