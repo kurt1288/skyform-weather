@@ -10,7 +10,6 @@ const formatTime = (time: Date) => {
 
   return time.toLocaleTimeString('en-US', {
     hour: 'numeric',
-    minute: '2-digit',
     hour12: true
   });
 }
@@ -81,7 +80,7 @@ h4 {
 
 .hourInfo {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 60px repeat(4, 1fr);
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
