@@ -34,11 +34,11 @@ const getWidth = (t: number) => {
       <div class="hourInfo" v-for="hour in weatherData.hourly">
         <div id="hourInfoTime" class="secondary">{{ formatTime(hour.time) }}</div>
         <div id="hourInfoTemp">
+          <div class="value">{{ Math.round(hour.temp) }}°</div>
           <div
             class="bar"
             :style="{ width: getWidth(Math.round(hour.temp)) }"
           ></div>
-          <span class="value">{{ Math.round(hour.temp) }}°</span>
         </div>
         <div id="hourInfoClouds">
           {{ hour.clouds }}%
@@ -89,25 +89,16 @@ h4 {
   #hourInfoTemp {
     font-size: type-scale(3);
     position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
 
     .bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background-color: $layer-accent-01;
-      border-right: 2px solid $blue-50;
-      z-index: 1;
+      height: 2px;
+      background-color: $blue-50;
     }
 
     .value {
-      position: relative;
-      z-index: 2;
       width: 100%;
       text-align: center;
+      margin-bottom: $spacing-02;
     }
   }
 
