@@ -33,37 +33,42 @@ const formatStringDate = (date: Date) => {
           <p class="feelsLike">Feels like {{ Math.round(weatherData.current.apparent_temperature) }}°</p>
         </div>
       </div>
-      <div class="today">
-        <div class="cell">
-          <p class="label">Clouds</p>
-          <p class="value">{{ weatherData.current.cloud_cover }}%</p>
-        </div>
-        <div class="cell">
-          <p class="label">Precip</p>
-          <p class="value">{{ weatherData.current.precipitation.toFixed(2) }}in</p>
-        </div>
-        <div class="cell">
-          <p class="label">Hum</p>
-          <p class="value">{{ weatherData.current.relative_humidity_2m }}%</p>
-        </div>
-        <div class="cell">
-          <p class="label">Wind</p>
-          <p class="value windInfo">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              :style="{ transform: `rotate(${weatherData.current.wind_direction_10m + 180}deg)` }"
-            >
-              <path d="M12,2 L19,21 L12,17 L5,21 Z" />
-            </svg>
-            <span>{{ Math.round(weatherData.current.wind_speed_10m) }}mph</span>
-          </p>
-        </div>
-        <div class="cell">
-          <p class="label">Gusts</p>
-          <p class="value">{{ Math.round(weatherData.current.wind_gusts_10m) }}mph</p>
+      <div class="now">
+        <div class="stack">
+          <div class="row">
+            <div class="cell">
+              <label>Precip</label>
+              <span class="value">{{ weatherData.current.precipitation.toFixed(2) }}<small>in</small></span>
+            </div>
+            <div class="cell">
+              <label>Hum</label>
+              <span class="value">{{ weatherData.current.relative_humidity_2m }}<small>%</small></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="cell">
+              <label>Clouds</label>
+              <span class="value">{{ weatherData.current.cloud_cover }}<small>%</small></span>
+            </div>
+            <div class="cell">
+              <label>Wind</label>
+              <div class="value windInfo">
+                <svg
+                  class="windArrow"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  :style="{ transform: `rotate(${weatherData.current.wind_direction_10m + 180}deg)` }"
+                >
+                  <path d="M12,2 L19,21 L12,17 L5,21 Z" />
+                </svg>
+                <span>{{ Math.round(weatherData.current.wind_speed_10m) }}</span>
+                <small>mph</small>
+                <small>(G{{ Math.round(weatherData.current.wind_gusts_10m) }})</small>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -92,35 +97,54 @@ const formatStringDate = (date: Date) => {
     align-items: center;
     gap: $spacing-09;
 
-    .today {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: $spacing-04;
-      margin-top: $spacing-05;
+    .now {
+      width: 100%;
 
-      .cell {
+      .stack {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-
-        .label {
-          color: $text-secondary;
-          font-size: type-scale(1);
-        }
-
-        .value {
-          @include type-style('code-02');
-          font-weight: font-weight('semibold');
-        }
+        gap: $spacing-04;
+        margin-top: $spacing-05;
 
         .windInfo {
           display: flex;
           align-items: center;
+        }
+
+        .row {
+          display: flex;
           gap: $spacing-02;
 
-          svg {
-            transform-origin: center;
-            display: inline-block;
-            color: $green-40;
+          .cell {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            label {
+              @include type-style('body-compact-02');
+              color: $text-helper;
+              font-size: type-scale(1);
+              font-weight: font-weight('normal');
+            }
+
+            .value {
+              @include type-style('code-02');
+              font-weight: font-weight('normal');
+              font-size: type-scale(3);
+
+              .windArrow {
+                color: $green-40;
+                margin-right: $spacing-02;
+              }
+
+              small {
+                @include type-style('body-compact-01');
+                color: $text-secondary;
+                font-size: type-scale(1);
+                margin-left: $spacing-01;
+              }
+            }
           }
         }
       }
