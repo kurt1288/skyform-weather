@@ -98,16 +98,20 @@ h4 {
   #hourInfoTemp {
     font-size: type-scale(3);
     position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .bar {
-      height: 2px;
+      height: 5px;
       background-color: $blue-50;
+      margin-bottom: $spacing-02;
     }
 
     .value {
       width: 100%;
       text-align: center;
-      margin-bottom: $spacing-02;
     }
   }
 
