@@ -101,10 +101,10 @@ h4 {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
 
     .bar {
-      height: 5px;
+      height: 2px;
       background-color: $blue-50;
       margin-bottom: $spacing-02;
     }
