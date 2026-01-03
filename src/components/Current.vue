@@ -13,7 +13,7 @@ const formatStringDate = (date: Date) => {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true
-  }).format((Number(date) * 1000)).replace(',', '');
+  }).format(date).replace(',', '');
 };
 </script>
 
@@ -22,7 +22,7 @@ const formatStringDate = (date: Date) => {
     <header>
       <div>
         <p class="location">{{ location }}</p>
-        <p class="time">{{ formatStringDate(weatherData.current.time) }}</p>
+        <p class="time">{{ formatStringDate(new Date()) }}</p>
       </div>
     </header>
     <section class="currentInfo">
