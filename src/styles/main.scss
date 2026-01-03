@@ -13,10 +13,6 @@ body {
   @include type-style('body-compact-01');
 }
 
-/* #app {
-  padding: $spacing-06 $spacing-05 0;
-} */
-
 h1, h2, h3, h4, p {
   margin: 0;
 }
@@ -41,6 +37,10 @@ button {
   color: $text-secondary;
   cursor: pointer;
   border-radius: 0;
+
+  &:active {
+    background-color: $gray-80;
+  }
 }
 
 section {
