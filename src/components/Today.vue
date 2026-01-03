@@ -12,7 +12,7 @@ defineProps<{
         <span class="primary">{{ Math.round(weatherData.daily[0].tempMax) }}°</span><span class="secondary">{{ Math.round(weatherData.daily[0].tempMin) }}°</span>
       </div>
       <div class="cell">
-        <span class="primary">{{ weatherData.daily[0].precipChance }}%</span>
+        <span class="primary">{{ weatherData.daily[0].precipChance }}<small>%</small></span>
         <span class="secondary">({{ weatherData.daily[0].precipTotal.toFixed(2) }}in)</span>
       </div>
       <div class="cell">
@@ -27,7 +27,7 @@ defineProps<{
             >
               <path d="M12,2 L19,21 L12,17 L5,21 Z" />
             </svg>
-            <span>{{ Math.round(weatherData.daily[0].windMax) }}mph</span>
+            <span class="primary">{{ Math.round(weatherData.daily[0].windMax) }}<small>mph</small></span>
             <span class="secondary">(G{{ Math.round(weatherData.daily[0].gustMax) }})</span>
           </div>
         </span>
@@ -56,8 +56,15 @@ defineProps<{
 .cell {
   .primary {
     @include type-style('code-02');
-    font-weight: font-weight('semibold');
+    font-size: type-scale(3);
     margin-right: $spacing-02;
+
+    small {
+      @include type-style('body-compact-01');
+      color: $text-secondary;
+      font-size: type-scale(1);
+      margin-left: $spacing-01;
+    }
   }
 
   .secondary {

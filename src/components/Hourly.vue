@@ -31,7 +31,7 @@ const getWidth = (t: number) => {
     <h4>NEXT 24 HOURS</h4>
     <div>
       <div class="hourInfo" v-for="hour in weatherData.hourly">
-        <div id="hourInfoTime" class="secondary">{{ formatTime(hour.time) }}</div>
+        <div class="secondary">{{ formatTime(hour.time) }}</div>
         <div id="hourInfoTemp">
           <div class="value">{{ Math.round(hour.temp) }}°</div>
           <div
@@ -40,10 +40,10 @@ const getWidth = (t: number) => {
           ></div>
         </div>
         <div id="hourInfoClouds">
-          {{ hour.clouds }}%
+          <span class="value">{{ hour.clouds }}<small>%</small></span>
         </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
-          <div class="primary">{{ hour.precipProb }}%</div>
+          <div class="value">{{ hour.precipProb }}<small>%</small></div>
           <div class="secondary">{{ hour.precip.toFixed(2) }}in</div>
         </div>
         <div id="hourInfoWind" class="hourlyInfoCell">
@@ -56,8 +56,7 @@ const getWidth = (t: number) => {
           >
             <path d="M12,2 L19,21 L12,17 L5,21 Z" />
           </svg>
-          <div class="primary">{{ Math.round(hour.windSpeed) }}</div>
-          <div class="secondary">mph</div>
+          <div class="value">{{ Math.round(hour.windSpeed) }}<small>mph</small></div>
         </div>
       </div>
     </div>
@@ -85,6 +84,17 @@ h4 {
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
 
+  .value {
+    font-size: type-scale(3);
+
+    small {
+      @include type-style('body-compact-01');
+      color: $text-secondary;
+      font-size: type-scale(1);
+      margin-left: $spacing-01;
+    }
+  }
+
   #hourInfoTemp {
     font-size: type-scale(3);
     position: relative;
@@ -102,7 +112,7 @@ h4 {
   }
 
   #hourInfoClouds {
-    text-align: center;
+    text-align: right;
   }
 
   #hourInfoPrecip {

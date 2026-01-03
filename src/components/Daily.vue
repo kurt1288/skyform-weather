@@ -40,7 +40,7 @@ const days = computed(() => {
           </div>
         </div>
         <div id="dayInfoPrecip" class="dayInfoCell">
-          <div class="primary">{{ day.precipChance }}%</div>
+          <div class="primary">{{ day.precipChance }}<small>%</small></div>
           <div class="secondary">{{ day.precipTotal.toFixed(2) }}in</div>
         </div>
         <div id="dayInfoWind" class="dayInfoCell">
@@ -53,8 +53,7 @@ const days = computed(() => {
           >
             <path d="M12,2 L19,21 L12,17 L5,21 Z" />
           </svg>
-          <div class="primary">{{ Math.round(day.windMax) }}</div>
-          <div class="secondary">mph</div>
+          <div class="primary">{{ Math.round(day.windMax) }}<small>mph</small></div>
         </div>
       </div>
     </div>
@@ -107,6 +106,19 @@ h4 {
     display: flex;
     align-items: center;
     justify-content: right;
+
+    .primary {
+      @include type-style('code-02');
+      font-size: type-scale(3);
+      margin-right: $spacing-02;
+
+      small {
+        @include type-style('body-compact-01');
+        color: $text-secondary;
+        font-size: type-scale(1);
+        margin-left: $spacing-01;
+      }
+    }
   }
 
   #dayInfoPrecip {
