@@ -63,9 +63,14 @@ const formatStringDate = (date: Date) => {
                 >
                   <path d="M12,2 L19,21 L12,17 L5,21 Z" />
                 </svg>
-                <span>{{ Math.round(weatherData.current.wind_speed_10m) }}</span>
-                <small>mph</small>
-                <small>(G{{ Math.round(weatherData.current.wind_gusts_10m) }})</small>
+                <div>
+
+                </div>
+                <div>
+                  <span>{{ Math.round(weatherData.current.wind_speed_10m) }}</span>
+                  <small>mph</small>
+                  <small>(G{{ Math.round(weatherData.current.wind_gusts_10m) }})</small>
+                </div>
               </div>
             </div>
           </div>
