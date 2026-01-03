@@ -28,7 +28,7 @@ defineProps<{
               <path d="M12,2 L19,21 L12,17 L5,21 Z" />
             </svg>
             <span>{{ Math.round(weatherData.daily[0].windMax) }}mph</span>
-            <span class="secondary">(G {{ Math.round(weatherData.daily[0].gustMax) }})</span>
+            <span class="secondary">(G{{ Math.round(weatherData.daily[0].gustMax) }})</span>
           </div>
         </span>
       </div>

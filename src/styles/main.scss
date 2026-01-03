@@ -39,7 +39,7 @@ button {
   border-radius: 0;
 
   &:active {
-    background-color: $gray-80;
+    background-color: $gray-80; /* This should use the button token but I can't figure that out */
   }
 }
 
