@@ -53,6 +53,6 @@ onUnmounted(() => {
 <style scoped lang="scss">
 #map {
   width: 100vw;
-  height: calc(100% - $spacing-08);
+  height: calc(100% - $spacing-09);
 }
 </style>
