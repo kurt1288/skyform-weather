@@ -63,7 +63,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="loading" v-if="isLoading">
+  <div class="loading" v-if="isLoading && appView === 'forecast'">
     <SkeletonLoader height="175px" />
     <SkeletonLoader height="125px" />
     <SkeletonLoader height="375px" />
