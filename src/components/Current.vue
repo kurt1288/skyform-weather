@@ -129,9 +129,8 @@ const formatStringDate = (date: Date) => {
             }
 
             .value {
-              @include type-style('code-02');
               font-weight: font-weight('normal');
-              font-size: type-scale(3);
+              font-size: type-scale(4);
 
               .windArrow {
                 color: $green-40;
