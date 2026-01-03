@@ -26,8 +26,7 @@ export const useDataService = () => {
   const isLoading = ref(true);
   let shouldUpdateAlerts = false;
 
-  const fetchWeather = async (location: GeolocationPosition) => {
-    isLoading.value = true;
+  const fetchWeather = async (location: GeolocationPosition) => {;
     const currentWindowId = getWindowId();
     const cachedWindowId = localStorage.getItem(TIMESTAMP_KEY);
     const cachedData = localStorage.getItem(CACHE_KEY);
@@ -41,6 +40,7 @@ export const useDataService = () => {
 
     console.log("Cache stale or missing. Updating from API...");
     shouldUpdateAlerts = true;
+    isLoading.value = true
 
     try {
       const data = await getWeather();
