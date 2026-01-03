@@ -37,6 +37,7 @@ button {
   color: $text-secondary;
   cursor: pointer;
   border-radius: 0;
+  -webkit-tap-highlight-color: transparent;
 
   &:active {
     background-color: $gray-80; /* This should use the button token but I can't figure that out */
