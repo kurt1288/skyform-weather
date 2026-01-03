@@ -14,7 +14,7 @@ const getWindowId = (coords: { latitude: number; longitude: number }) => {
   const now = new Date();
   const date = now.toISOString().split('T')[0];
   const interval = Math.floor(now.getMinutes() / 15);
-  const loc = `${coords.latitude.toFixed(4)},${coords.longitude.toFixed(4)}`;
+  const loc = `${coords.latitude.toFixed(2)},${coords.longitude.toFixed(2)}`;
   return `T:${date}-${now.getHours()}-${interval}|L:${loc}`;
 };
 
