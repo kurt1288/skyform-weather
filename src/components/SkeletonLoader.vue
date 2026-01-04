@@ -42,12 +42,10 @@ const customStyles = computed(() => {
 </template>
 
 <style scoped lang="scss">
-$skeleton-background: $layer-01;
-$skeleton-shimmer: $layer-02;
 
 .skeleton {
   display: block;
-  background-color: $skeleton-background;
+  background-color: $layer-01;
   position: relative;
   overflow: hidden;
 
@@ -69,33 +67,53 @@ $skeleton-shimmer: $layer-02;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        $skeleton-background 0%,
-        $skeleton-shimmer 50%,
-        $skeleton-background 100%
-      );
+      background: $layer-02;
       background-size: 200% 100%;
-      animation: skeleton-scan 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      animation: skeleton-scan 3s ease-in-out infinite;
+      will-change: transform-origin,transform,opacity;
     }
-  }
-
-  &.pulse {
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
   }
 }
 
 @keyframes skeleton-scan {
   0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-@keyframes skeleton-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+      opacity:.3;
+      transform:scaleX(0);
+      transform-origin:left
+    }
+    20% {
+      opacity:1;
+      transform:scaleX(1);
+      transform-origin:left
+    }
+    28% {
+      transform:scaleX(1);
+      transform-origin:right
+    }
+    51% {
+      transform:scaleX(0);
+      transform-origin:right
+    }
+    58% {
+      transform:scaleX(0);
+      transform-origin:right
+    }
+    82% {
+      transform:scaleX(1);
+      transform-origin:right
+    }
+    83% {
+      transform:scaleX(1);
+      transform-origin:left
+    }
+    96% {
+      transform:scaleX(0);
+      transform-origin:left
+    }
+    to {
+      opacity:.3;
+      transform:scaleX(0);
+      transform-origin:left
+    }
 }
 </style>
