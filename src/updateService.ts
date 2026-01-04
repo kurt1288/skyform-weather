@@ -28,6 +28,7 @@ const dateReviver = (key: string, value: any) => {
 
 export const useDataService = () => {
   const isLoading = ref(true);
+  const cityLoading = ref(true);
 
   const isFresh = (metaKey: string, currentId: string) => {
     isLoading.value = false;
@@ -67,6 +68,8 @@ export const useDataService = () => {
       return localStorage.getItem(CACHE_KEYS.CITY) || "";
     }
 
+    cityLoading.value = true;
+
     try {
       const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
       const response = await fetch(url);
@@ -79,6 +82,8 @@ export const useDataService = () => {
     } catch (error) {
       console.error("Error fetching city name:", error);
       return localStorage.getItem(CACHE_KEYS.CITY) || "";
+    } finally {
+      cityLoading.value = false;
     }
   }
 
@@ -112,5 +117,5 @@ export const useDataService = () => {
     }
   };
 
-  return { fetchWeather, fetchCityName, fetchAlerts, isLoading };
+  return { fetchWeather, fetchCityName, fetchAlerts, isLoading, cityLoading };
 };
