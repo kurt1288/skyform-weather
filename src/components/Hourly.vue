@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import PrecipCell from './PrecipCell.vue';
 
 const props =defineProps<{
   weatherData?: any
@@ -43,8 +44,10 @@ const getWidth = (t: number) => {
           <span class="value">{{ hour.clouds }}<small>%</small></span>
         </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
-          <div class="value">{{ hour.precipProb }}<small>%</small></div>
-          <div class="secondary">{{ hour.precip.toFixed(2) }}in</div>
+          <PrecipCell
+            :chance="hour.precipProb"
+            :amount="Number(hour.precip.toFixed(2))"
+          />
         </div>
         <div id="hourInfoWind" class="hourlyInfoCell">
           <svg
@@ -79,10 +82,11 @@ h4 {
 
 .hourInfo {
   display: grid;
-  grid-template-columns: 60px repeat(4, 1fr);
+  grid-template-columns: 40px 1fr 1fr 90px 1fr;
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
+  gap: $spacing-05;
 
   .value {
     font-size: type-scale(3);
@@ -104,7 +108,7 @@ h4 {
     justify-content: space-around;
 
     .bar {
-      height: 2px;
+      height: 4px;
       background-color: $blue-50;
       margin-bottom: $spacing-02;
     }

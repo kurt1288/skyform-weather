@@ -4,6 +4,7 @@ const props =defineProps<{
 }>();
 
 import { computed, ref } from 'vue';
+import PrecipCell from './PrecipCell.vue';
 
 const bounds = computed(() => {
   const lows = props.weatherData.daily.map((d: any) => d.tempMin);
@@ -40,8 +41,10 @@ const days = computed(() => {
           </div>
         </div>
         <div id="dayInfoPrecip" class="dayInfoCell">
-          <div class="primary">{{ day.precipChance }}<small>%</small></div>
-          <div class="secondary">{{ day.precipTotal.toFixed(2) }}in</div>
+          <PrecipCell
+            :chance="day.precipChance"
+            :amount="Number(day.precipTotal.toFixed(2))"
+          />
         </div>
         <div id="dayInfoWind" class="dayInfoCell">
           <svg
@@ -76,7 +79,7 @@ h4 {
 
 .dayInfo {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 70px 1fr 20px 1fr 80px;
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
@@ -96,7 +99,7 @@ h4 {
 
       div {
         position: absolute;
-        height: 2px;
+        height: 4px;
         background-color: $blue-50;
       }
     }
@@ -124,6 +127,7 @@ h4 {
   #dayInfoPrecip {
     flex-direction: column;
     align-items: end;
+    grid-column: 4;
   }
 
   .dot {
