@@ -7,12 +7,14 @@ const props =defineProps<{
 }>();
 
 const formatTime = (time: Date) => {
-  if (!time) return "";
-
-  return time.toLocaleTimeString('en-US', {
+  const formatted = time.toLocaleTimeString('en-US', {
     hour: 'numeric',
-    hour12: true
+    hour12: true,
   });
+
+  const [value, period] = formatted.split(/\s+/);
+
+  return { value, period };
 }
 
 const minTemp = computed(() => Math.min(...props.weatherData.hourly.map((hour: any) => hour.temp)));
@@ -36,7 +38,10 @@ const getWidth = (t: number) => {
     <h4>NEXT 24 HOURS</h4>
     <div>
       <div class="hourInfo" v-for="hour in weatherData.hourly">
-        <div class="secondary">{{ formatTime(hour.time) }}</div>
+        <div class="secondary">
+          <span>{{ formatTime(hour.time).value }}</span>
+          <span class="value">{{ formatTime(hour.time).period }}</span>
+        </div>
         <div id="hourInfoTemp">
           <div class="value">{{ Math.round(hour.temp) }}°</div>
           <div class="bar">
@@ -85,11 +90,20 @@ h4 {
 
 .hourInfo {
   display: grid;
-  grid-template-columns: 40px 1fr 1fr 90px 1fr;
+  grid-template-columns: 35px 1fr 1fr 90px 1fr;
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
   gap: $spacing-05;
+
+  .secondary {
+    color: $text-secondary;
+    font-size: type-scale(1);
+
+    .value {
+      font-size: type-scale(1);
+    }
+  }
 
   .value {
     font-size: type-scale(3);
@@ -145,11 +159,6 @@ h4 {
 
   .dot {
     padding: 0 $spacing-02;
-  }
-
-  .secondary {
-    color: $text-secondary;
-    font-size: type-scale(1);
   }
 
   svg {
