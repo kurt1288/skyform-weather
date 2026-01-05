@@ -15,15 +15,19 @@ const formatTime = (time: Date) => {
   });
 }
 
-const padding = 5;
-const minTemp = computed(() => Math.min(...props.weatherData.hourly.map((hour: any) => hour.temp)) - padding);
-const maxTemp = computed(() => Math.max(...props.weatherData.hourly.map((hour: any) => hour.temp)) + padding);
+const minTemp = computed(() => Math.min(...props.weatherData.hourly.map((hour: any) => hour.temp)));
+const maxTemp = computed(() => Math.max(...props.weatherData.hourly.map((hour: any) => hour.temp)));
 
 const getWidth = (t: number) => {
   if (maxTemp.value === minTemp.value) return '50%';
 
-  const percentage = ((t - minTemp.value) / (maxTemp.value - minTemp.value)) * 100;
-  return `${percentage}%`;
+  const padding = 1;
+  const paddedMin = minTemp.value - padding;
+  const paddedMax = maxTemp.value + padding;
+
+  const virtualMin = paddedMin - (paddedMax - paddedMin) * 0.1;
+  const percentage = ((t - virtualMin) / (paddedMax - virtualMin)) * 100;
+  return `${Math.min(100, Math.max(0, percentage))}%`;
 };
 </script>
 
@@ -35,10 +39,9 @@ const getWidth = (t: number) => {
         <div class="secondary">{{ formatTime(hour.time) }}</div>
         <div id="hourInfoTemp">
           <div class="value">{{ Math.round(hour.temp) }}°</div>
-          <div
-            class="bar"
-            :style="{ width: getWidth(Math.round(hour.temp)) }"
-          ></div>
+          <div class="bar">
+            <div class="fill" :style="{ width: getWidth(Math.round(hour.temp)) }"></div>
+          </div>
         </div>
         <div id="hourInfoClouds">
           <span class="value">{{ hour.clouds }}<small>%</small></span>
@@ -109,13 +112,19 @@ h4 {
 
     .bar {
       height: 4px;
-      background-color: $blue-50;
-      margin-bottom: $spacing-02;
+      background: $layer-accent-hover-01;
+      overflow: hidden;
+
+      .fill {
+        height: 100%;
+        background-color: $blue-50;
+      }
     }
 
     .value {
       width: 100%;
       text-align: center;
+      margin-bottom: $spacing-02;
     }
   }
 
