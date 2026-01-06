@@ -3,7 +3,7 @@ const props =defineProps<{
   weatherData?: any
 }>();
 
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import PrecipCell from './PrecipCell.vue';
 
 const bounds = computed(() => {
@@ -47,6 +47,7 @@ const days = computed(() => {
           />
         </div>
         <div id="dayInfoWind" class="dayInfoCell">
+          <div class="primary">{{ Math.round(day.windMax) }}</div>
           <svg
             width="14"
             height="14"
@@ -56,7 +57,6 @@ const days = computed(() => {
           >
             <path d="M12,2 L19,21 L12,17 L5,21 Z" />
           </svg>
-          <div class="primary">{{ Math.round(day.windMax) }}<small>mph</small></div>
         </div>
       </div>
     </div>
@@ -79,10 +79,11 @@ h4 {
 
 .dayInfo {
   display: grid;
-  grid-template-columns: 70px 1fr 20px 1fr 80px;
+  grid-template-columns: 70px 1fr 1fr 45px;
   align-items: center;
   padding: $spacing-03 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
+  gap: $spacing-05;
 
   #dayInfoTemp {
     font-size: type-scale(3);
@@ -127,7 +128,6 @@ h4 {
   #dayInfoPrecip {
     flex-direction: column;
     align-items: end;
-    grid-column: 4;
   }
 
   .dot {
@@ -141,7 +141,6 @@ h4 {
 
   svg {
     color: $green-40;
-    margin-right: $spacing-02;
   }
 }
 </style>

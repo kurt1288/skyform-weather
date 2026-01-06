@@ -8,9 +8,7 @@ const props = defineProps<Props>();
 
 import { computed } from 'vue';
 
-const activeDots = computed(() => Math.round(props.chance / 10));
-
-const barWidth = computed(() => {
+const volumeWidth = computed(() => {
   if (props.amount === 0) return 0;
   // Square root scaling makes low-volume variations easier to see
   const width = Math.min((Math.sqrt(props.amount) * 80), 100);
@@ -20,16 +18,16 @@ const barWidth = computed(() => {
 
 <template>
   <div class="precip">
-    <div class="grid">
-      <div v-for="i in 10" :key="i" class="dot" :class="{ active: i <=activeDots }"></div>
-    </div>
     <div class="group">
       <div class="numbers">
         <span class="percent">{{ chance }}<small>%</small></span>
-        <span class="amount">{{ amount === 0.00 ? 0 : amount }}<small>in</small></span>
+        <span class="amount">{{ amount === 0.00 ? 0 : amount }}<small>"</small></span>
+      </div>
+      <div class="chance">
+        <div class="fill" :style="{ width: `${chance}%` }"></div>
       </div>
       <div class="volume">
-        <div class="fill" :style="{ width: `${barWidth}%` }"></div>
+        <div class="fill" :style="{ width: `${volumeWidth}%` }"></div>
       </div>
     </div>
   </div>
@@ -45,7 +43,7 @@ const barWidth = computed(() => {
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(2, 5px);
+    grid-template-columns: repeat(5, 5px);
     gap: 2px;
 
     .dot {
@@ -72,14 +70,23 @@ const barWidth = computed(() => {
       font-size: type-scale(1);
     }
 
-    .volume {
+    .chance {
       height: 4px;
-      background: $layer-accent-hover-01;
       overflow: hidden;
 
       .fill {
         height: 100%;
         background: green;
+      }
+    }
+
+    .volume {
+      height: 4px;
+      overflow: hidden;
+
+      .fill {
+        height: 100%;
+        background: $blue-50;
       }
     }
   }

@@ -58,6 +58,7 @@ const getWidth = (t: number) => {
           />
         </div>
         <div id="hourInfoWind" class="hourlyInfoCell">
+          <div class="value">{{ Math.round(hour.windSpeed) }}</div>
           <svg
             width="14"
             height="14"
@@ -67,7 +68,6 @@ const getWidth = (t: number) => {
           >
             <path d="M12,2 L19,21 L12,17 L5,21 Z" />
           </svg>
-          <div class="value">{{ Math.round(hour.windSpeed) }}<small>mph</small></div>
         </div>
       </div>
     </div>
@@ -90,9 +90,9 @@ h4 {
 
 .hourInfo {
   display: grid;
-  grid-template-columns: 35px 1fr 1fr 90px 1fr;
+  grid-template-columns: 35px 1fr 1fr 1fr 45px;
   align-items: center;
-  padding: $spacing-03 $spacing-04;
+  padding: $spacing-04 $spacing-04;
   border-bottom: 1px solid $border-subtle-01;
   gap: $spacing-05;
 
@@ -126,7 +126,6 @@ h4 {
 
     .bar {
       height: 4px;
-      background: $layer-accent-hover-01;
       overflow: hidden;
 
       .fill {
@@ -163,7 +162,6 @@ h4 {
 
   svg {
     color: $green-40;
-    margin-right: $spacing-02;
   }
 }
 </style>
