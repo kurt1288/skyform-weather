@@ -38,7 +38,7 @@ const formatStringDate = (date: Date) => {
           <div class="row">
             <div class="cell">
               <label>Precip</label>
-              <span class="value">{{ weatherData.current.precipitation.toFixed(2) }}<small>in</small></span>
+              <span class="value">{{ Number(weatherData.current.precipitation.toFixed(2)) }}<small>in</small></span>
             </div>
             <div class="cell">
               <label>Hum</label>
