@@ -50,6 +50,9 @@ const getWidth = (t: number) => {
         </div>
         <div id="hourInfoClouds">
           <span class="value">{{ hour.clouds }}<small>%</small></span>
+          <div class="bar">
+            <div class="fill" :style="{ width: `${hour.clouds}%` }"></div>
+          </div>
         </div>
         <div id="hourInfoPrecip" class="hourlyInfoCell">
           <PrecipCell
@@ -116,8 +119,8 @@ h4 {
     }
   }
 
-  #hourInfoTemp {
-    font-size: type-scale(3);
+  #hourInfoTemp,
+  #hourInfoClouds {
     position: relative;
     height: 100%;
     display: flex;
@@ -130,7 +133,6 @@ h4 {
 
       .fill {
         height: 100%;
-        background-color: $blue-50;
       }
     }
 
@@ -141,8 +143,12 @@ h4 {
     }
   }
 
-  #hourInfoClouds {
-    text-align: right;
+  #hourInfoTemp .bar .fill {
+    background-color: $blue-50;
+  }
+
+  #hourInfoClouds .bar .fill {
+    background-color: $gray-50;
   }
 
   #hourInfoPrecip {
