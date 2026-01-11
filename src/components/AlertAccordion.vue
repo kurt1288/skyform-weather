@@ -45,6 +45,7 @@ const isOpen = ref(false);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: $spacing-04 0;
 
     h2 {
       font-size: type-scale(4);

@@ -20,7 +20,7 @@ import AlertAccordion from './AlertAccordion.vue';
 .alerts {
   background-color: $yellow-10;
   border-left: 3px solid $yellow-30;
-  padding: $spacing-04;
+  padding: 0 $spacing-04;
   color: $text-inverse;
   margin-bottom: $spacing-05;
 }
